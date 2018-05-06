@@ -1,0 +1,7 @@
+---
+
+- name: "Require | Include"
+  include_tasks: "require.yml"
+
+- name: "Install | Include"
+  include_tasks: "install.yml"

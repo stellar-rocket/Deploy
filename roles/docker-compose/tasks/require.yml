@@ -1,0 +1,13 @@
+---
+
+- name: "Require | Define {{ docker_service }} path"
+  set_fact:
+    docker_app: "{{ rocket.home }}/{{ docker_service }}"
+
+- name: "Require | Create docker app home"
+  file:
+    path: "{{ docker_app }}"
+    state: directory
+
+- set_fact:
+    update_required: false

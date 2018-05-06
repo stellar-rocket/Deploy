@@ -1,0 +1,26 @@
+{
+  "database": {
+    "type": "mongodb",
+    "host": "mongo",
+    "port": 27017,
+    "database": "{{ MONGO_DATABASE }}",
+    "username": "{{ MONGO_USER }}",
+    "password": "{{ VAULT_MONGO_PASSWORD }}"
+  },
+  "secret": "{{ VAULT_BANK_SECRET }}",
+  "server": {
+    "port": {{ bank_port }},
+    "host": "0.0.0.0"
+  },
+  "stellar": {
+    "network": "{{ STELLAR_NETWORK }}",
+    "withdraw": {
+      "interval": {{ bank_stellar_withdraw_interval }},
+      "operationCount": {{ bank_stellar_withdraw_operation_count }}
+    },
+    "minBalance": {{ bank_stellar_min_balance }},
+    "maxBalance": {{ bank_stellar_max_balance }},
+    "warningBalance": {{ bank_stellar_warning_balance }},
+    "checkInterval": {{ bank_stellar_check_interval }}
+  }
+}

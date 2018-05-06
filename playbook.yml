@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  roles:
+    - common
+
+- hosts: master
+  vars_files:
+    - vars/main.yml
+  roles:
+    - backend
+  tags:
+    - all
+    - backend
+
+- hosts: master
+  vars_files:
+    - vars/main.yml
+  roles:
+    - frontend
+  tags:
+    - all
+    - frontend

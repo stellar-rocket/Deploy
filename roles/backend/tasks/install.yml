@@ -1,0 +1,39 @@
+---
+
+- name: "install | Create conf directories"
+  file:
+    path: "{{ docker_app }}/conf/{{ folder }}"
+    state: directory
+  loop_control:
+    loop_var: folder
+  with_items:
+    - mongo
+    - mongoexpress
+    - traefik
+
+- name: "install | Copy mongoexpress configs"
+  template:
+    src: "files/conf/mongoexpress/config.js"
+    dest: "{{ docker_app }}/conf/mongoexpress/"
+  register: copy_mongoexpress_config
+
+- name: "install | Copy mongo configs"
+  template:
+    src: "files/conf/mongo/mongo.conf"
+    dest: "{{ docker_app }}/conf/mongo/"
+  register: copy_mongo_config
+
+- name: "install | Copy traefik configs"
+  template:
+    src: "files/conf/traefik/traefik.toml"
+    dest: "{{ docker_app }}/conf/traefik/"
+  register: copy_traefik_config
+
+- name: "install | Create traefik acme"
+  file:
+    path: "{{ docker_app }}/conf/traefik/acme.json"
+    state: file
+
+- name: "install | Check if restart required"
+  set_fact:
+    update_required: "{{ update_required or copy_traefik_config.changed or copy_mongo_config.changed or copy_mongoexpress_config.changed }}"

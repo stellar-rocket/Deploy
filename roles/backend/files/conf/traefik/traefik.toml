@@ -1,0 +1,50 @@
+################################################################
+# Global configuration
+################################################################
+
+logLevel = "DEBUG"
+
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+      [entryPoints.http.redirect]
+      entryPoint = "https"
+    [entryPoints.api]
+    address = ":{{ traefik_port }}"
+      [entryPoints.api.auth]
+        [entryPoints.api.auth.basic]
+        users = [
+          "{{ traefik_admin_user }}:{{ VAULT_TRAEFIK_ADMIN_PASSWORD }}"
+        ]
+    [entryPoints.https]
+    address = ":443"
+      [entryPoints.https.tls]
+
+[acme]
+email = "contact@stellar-rocket.com"
+storage = "acme.json"
+entryPoint = "https"
+OnHostRule = true
+[acme.httpChallenge]
+entryPoint = "http"
+
+################################################################
+# Web configuration backend
+################################################################
+
+[api]
+
+entryPoint = "api"
+dashboard = true
+
+################################################################
+# Docker configuration backend
+################################################################
+
+[docker]
+
+watch = true
+
+domain = "{{ DNS_DOMAIN }}"

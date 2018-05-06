@@ -1,0 +1,21 @@
+rocket:
+  user: "{{ rocket_user | default('rocket') }}"
+  home: "{{ rocket_home | default('/app') }}"
+
+docker_service: backend
+
+admin_root_url: "/admin"
+
+###
+# Traefik
+###
+traefik_port: "8080"
+traefik_root_url: "{{ admin_root_url }}/traefik"
+traefik_admin_user: "admin"
+
+###
+# Mongo
+###
+mongoexpress_port: "8081"
+mongoexpress_root_url: "{{ admin_root_url }}/database"
+mongoexpress_admin_user: "admin"

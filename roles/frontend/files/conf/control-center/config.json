@@ -1,0 +1,18 @@
+{
+  "database": {
+    "type": "mongodb",
+    "host": "mongo",
+    "port": 27017,
+    "database": "{{ MONGO_DATABASE }}",
+    "username": "{{ MONGO_USER }}",
+    "password": "{{ VAULT_MONGO_PASSWORD }}"
+  },
+  "server": {
+    "port": {{ control_center_port }},
+    "host": "0.0.0.0"
+  },
+  "secret": "{{ VAULT_CONTROL_CENTER_SECRET }}",
+  "gameInterval": {{ control_center_game_interval }},
+  "speed": {{ control_center_speed }},
+  "gameByRun": {{ control_center_game_by_run }}
+}

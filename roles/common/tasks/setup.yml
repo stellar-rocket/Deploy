@@ -1,0 +1,7 @@
+---
+
+- name: "setup | Create docker network"
+  docker_network:
+    driver: overlay
+    name: "{{ DOCKER_NETWORK }}"
+    state: present

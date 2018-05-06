@@ -1,0 +1,70 @@
+version: "3.5"
+services:
+  control-center:
+    image: "{{ DOCKER_REGISTRY }}/stellar-rocket/control-center:latest"
+    networks:
+      - web
+    deploy:
+      restart_policy:
+        condition: any
+    volumes:
+      - "./conf/control-center:/usr/config"
+    labels:
+      - "traefik.enable=false"
+
+  bank:
+    image: "{{ DOCKER_REGISTRY }}/stellar-rocket/bank:latest"
+    networks:
+      - web
+    deploy:
+      restart_policy:
+        condition: any
+    volumes:
+      - "./conf/bank:/usr/config"
+    environment:
+      - STELLAR_ADDRESS={{ VAULT_STELLAR_ADDRESS }}
+      - STELLAR_COLD_ADDRESS={{ VAULT_STELLAR_COLD_ADDRESS }}
+    labels:
+      - "traefik.enable=false"
+
+  frontend:
+    image: "{{ DOCKER_REGISTRY }}/stellar-rocket/frontend:latest"
+    networks:
+      - web
+    deploy:
+      restart_policy:
+        condition: any
+      mode: replicated
+      replicas: 3
+    volumes:
+      - "./conf/frontend:/usr/config"
+    labels:
+      - "traefik.backend=frontend"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:{{ DNS_DOMAIN }};PathPrefixStrip:{{ frontend_root_url }}"
+      - "traefik.port={{ frontend_port }}"
+    depends_on:
+      - control-center
+      - bank
+
+  web-static:
+    image: "{{ DOCKER_REGISTRY }}/stellar-rocket/web-static:latest"
+    networks:
+      - web
+    deploy:
+      restart_policy:
+        condition: any
+      mode: replicated
+      replicas: 3
+    volumes:
+      - "./conf/nginx:/etc/nginx/conf.d"
+    labels:
+      - "traefik.backend=web-static"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:{{ DNS_DOMAIN }}"
+      - "traefik.port={{ web_static_port }}"
+
+networks:
+  web:
+    external: true
+    name: {{ DOCKER_NETWORK }}

@@ -1,0 +1,4 @@
+
+rocket:
+  user: "{{ rocket_user | default('rocket') }}"
+  home: "{{ rocket_home | default('/app') }}"

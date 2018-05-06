@@ -1,0 +1,13 @@
+---
+
+APP_ROOT: "/app"
+
+DOCKER_REGISTRY: "registry.gitlab.com"
+DOCKER_NETWORK: "stellar-rocket"
+
+DNS_DOMAIN: "exemple.com"
+
+MONGO_DATABASE: "stellar-rocket-app"
+MONGO_USER: "rocket"
+
+STELLAR_NETWORK: "test"

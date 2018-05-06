@@ -1,0 +1,31 @@
+{
+  "database": {
+    "type": "mongodb",
+    "host": "mongo",
+    "port": 27017,
+    "database": "{{ MONGO_DATABASE }}",
+    "username": "{{ MONGO_USER }}",
+    "password": "{{ VAULT_MONGO_PASSWORD }}"
+  },
+  "server": {
+    "port": {{ frontend_port }},
+    "host": "0.0.0.0"
+  },
+  "controlCenter": {
+    "port": {{ control_center_port }},
+    "host": "control-center",
+    "secret": "{{ VAULT_CONTROL_CENTER_SECRET }}"
+  },
+  "bank": {
+    "port": {{ bank_port }},
+    "host": "bank",
+    "secret": "{{ VAULT_BANK_SECRET }}"
+  },
+  "captcha": {
+    "sitekey": "{{ VAULT_CAPTCHA_SITEKEY }}",
+    "secret": "{{ VAULT_CAPTCHA_SECRET }}"
+  },
+  "bet": {
+    "maxBet": {{ frontend_max_bet }}
+  }
+}

@@ -1,0 +1,2 @@
+#!/bin/bash
+ansible-playbook -i bind/test/inventory bind/test/playbook.yml

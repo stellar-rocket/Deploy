@@ -1,0 +1,36 @@
+rocket:
+  user: "{{ rocket_user | default('rocket') }}"
+  home: "{{ rocket_home | default('/app') }}"
+
+docker_service: frontend
+
+###
+# Bank
+###
+bank_port: "3000"
+bank_stellar_withdraw_interval: "300000"
+bank_stellar_withdraw_operation_count: "10"
+bank_stellar_min_balance: "5"
+bank_stellar_max_balance: "10000"
+bank_stellar_warning_balance: "1000"
+bank_stellar_check_interval: "600000"
+
+###
+# Control-Center
+###
+control_center_port: "3000"
+control_center_game_interval: "5000"
+control_center_speed: "100"
+control_center_game_by_run: "5000"
+
+###
+# Frontend
+###
+frontend_port: "3000"
+frontend_root_url: "/api"
+frontend_max_bet: "100000000" # 10 Lumens
+
+###
+# Web-Static
+###
+web_static_port: "80"

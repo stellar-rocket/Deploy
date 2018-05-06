@@ -1,0 +1,22 @@
+---
+
+- name: "Install | Copy docker-compose.yml"
+  template:
+    src: "files/docker-compose.yml"
+    dest: "{{ docker_app }}"
+  register: copy_config
+
+- name: "Install | Check if restart required"
+  set_fact:
+    update_required: "{{ update_required or copy_config.changed }}"
+
+- name: "Install | Start {{ docker_service }} container"
+  shell: |
+    docker stack deploy --compose-file ./docker-compose.yml rocket-{{ docker_service }}
+  args:
+    chdir: "{{ docker_app }}"
+
+- name: "Install | Remove docker-compose.yml"
+  file:
+    dest: "{{ docker_app }}/docker-compose.yml"
+    state: absent

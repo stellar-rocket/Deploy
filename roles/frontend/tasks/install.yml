@@ -1,0 +1,35 @@
+---
+
+- name: "install | Create conf directories"
+  file:
+    path: "{{ docker_app }}/conf/{{ folder }}"
+    state: directory
+  loop_control:
+    loop_var: folder
+  with_items:
+    - frontend
+    - bank
+    - control-center
+    - nginx
+
+- name: "install | Copy app configs"
+  template:
+    src: "files/conf/{{ app }}/config.json"
+    dest: "{{ docker_app }}/conf/{{ app }}/"
+  loop_control:
+    loop_var: app
+  with_items:
+    - bank
+    - frontend
+    - control-center
+  register: copy_app_config
+
+- name: "install | Copy web-static configs"
+  template:
+    src: "files/conf/nginx/stellar-rocket.conf"
+    dest: "{{ docker_app }}/conf/nginx/"
+  register: copy_web_static_config
+
+- name: "install | Check if restart required"
+  set_fact:
+    update_required: "{{ update_required or copy_app_config.changed or copy_web_static_config.changed }}"

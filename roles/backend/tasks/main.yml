@@ -1,0 +1,10 @@
+---
+
+- name: "main | Include Docker-Compose require"
+  include_tasks: "../../docker-compose/tasks/require.yml"
+
+- name: "main | Include install"
+  include_tasks: "install.yml"
+
+- name: "main | Include Docker-Compose install"
+  include_tasks: "../../docker-compose/tasks/install.yml"

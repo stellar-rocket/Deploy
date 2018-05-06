@@ -1,0 +1,4 @@
+---
+
+- name: "main | Setup app"
+  include_tasks: setup.yml

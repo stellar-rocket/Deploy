@@ -1,0 +1,57 @@
+version: "3.5"
+services:
+  traefik:
+    image: "traefik:latest"
+    deploy:
+      restart_policy:
+        condition: any
+    command: --configfile="/traefik.toml"
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - web
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./conf/traefik/traefik.toml:/traefik.toml"
+      - "./conf/traefik/acme.json:/acme.json"
+    labels:
+      - "traefik.backend=traefik"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:{{ DNS_DOMAIN }};PathPrefixStrip:{{ traefik_root_url }}"
+      - "traefik.port={{ traefik_port }}"
+
+  mongo:
+    image: "mongo:latest"
+    deploy:
+      restart_policy:
+        condition: any
+    networks:
+      - web
+    volumes:
+      - "./data/mongo:/data/db"
+      - "./conf/mongo/mongo.conf:/etc/mongo.conf"
+    labels:
+      - "traefik.enable=false"
+
+  mongoexpress:
+    image: "mongo-express:latest"
+    deploy:
+      restart_policy:
+        condition: any
+    networks:
+      - web
+    depends_on:
+      - mongo
+    volumes:
+      - ./conf/mongoexpress/config.js:/node_modules/mongo-express/config.js
+    labels:
+      - "traefik.backend=mongoexpress"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:{{ DNS_DOMAIN }};PathPrefix:{{ mongoexpress_root_url }}"
+      - "traefik.port={{ mongoexpress_port }}"
+
+networks:
+  web:
+    external: true
+    name: {{ DOCKER_NETWORK }}

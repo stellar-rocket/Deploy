@@ -1,0 +1,16 @@
+---
+
+- name: "main | Include Docker-Compose require"
+  include_tasks: "../../docker-compose/tasks/require.yml"
+
+- name: "main | Include install"
+  include_tasks: "install.yml"
+
+- name: "main | Login registry"
+  docker_login:
+    registry_url: "{{ DOCKER_REGISTRY }}"
+    username: "{{ VAULT_DOCKER_REGISTRY_USER }}"
+    password: "{{ VAULT_DOCKER_REGISTRY_PASSWORD }}"
+
+- name: "main | Include Docker-Compose install"
+  include_tasks: "../../docker-compose/tasks/install.yml"
